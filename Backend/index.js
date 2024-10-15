@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(router);
 
 app.listen(port, () => {port
-  console.log(`Example app listening on port ${}`)
+  console.log(`Example app listening on port ${port}`)
 })
 
 
