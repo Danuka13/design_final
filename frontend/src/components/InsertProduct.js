@@ -34,7 +34,7 @@ export default function InsertProduct() {
         setError("");
 
         try {
-            const res = await fetch("http://localhost:3001/insertproduct", {
+            const res = await fetch("https://vercel.live/link/design-final-osws.vercel.app?via=project-dashboard-alias-list&p=1", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

@@ -27,7 +27,7 @@ export default function InsertProduct() {
     useEffect(() => {
         const getProduct = async () => {
           try {
-            const res = await fetch(`http://localhost:3001/products/${id}`, {
+            const res = await fetch(`https://vercel.live/link/design-final-osws.vercel.app?via=project-dashboard-alias-list&p=1/${id}`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json"
@@ -64,7 +64,7 @@ export default function InsertProduct() {
         setError("");
 
         try {
-            const response = await fetch(`http://localhost:3001/updateproduct/${id}`, {
+            const response = await fetch(`https://vercel.live/link/design-final-osws.vercel.app?via=project-dashboard-alias-list&p=1/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"

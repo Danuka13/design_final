@@ -2,82 +2,73 @@ const express = require('express');
 const router = express.Router();
 const products = require('../Models/Products');
 
-//Inserting(Creating) Data:
-router.post("/insertproduct", async (req, res) => {
+// Insert Product (Create)
+router.post("/api/insertproduct", async (req, res) => {
     const { ProductName, ProductPrice, ProductBarcode } = req.body;
 
     try {
         const pre = await products.findOne({ ProductBarcode: ProductBarcode })
-        console.log(pre);
-
         if (pre) {
-            res.status(422).json("Product is already added.")
-        }
-        else {
-            const addProduct = new products({ ProductName, ProductPrice, ProductBarcode })
-
+            return res.status(422).json({ error: "Product is already added." });
+        } else {
+            const addProduct = new products({ ProductName, ProductPrice, ProductBarcode });
             await addProduct.save();
-            res.status(201).json(addProduct)
-            console.log(addProduct)
+            res.status(201).json(addProduct);
         }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Internal Server Error" });
     }
-    catch (err) {
-        console.log(err)
-    }
-})
+});
 
-//Getting(Reading) Data:
-router.get('/products', async (req, res) => {
-
+// Get All Products (Read)
+router.get('/api/products', async (req, res) => {
     try {
-        const getProducts = await products.find({})
-        console.log(getProducts);
-        res.status(201).json(getProducts);
+        const getProducts = await products.find({});
+        res.status(200).json(getProducts);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Internal Server Error" });
     }
-    catch (err) {
-        console.log(err);
-    }
-})
+});
 
-//Getting(Reading) individual Data:
-router.get('/products/:id', async (req, res) => {
-
+// Get Product by ID (Read)
+router.get('/api/products/:id', async (req, res) => {
     try {
         const getProduct = await products.findById(req.params.id);
-        console.log(getProduct);
-        res.status(201).json(getProduct);
+        res.status(200).json(getProduct);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Internal Server Error" });
     }
-    catch (err) {
-        console.log(err);
-    }
-})
+});
 
-//Editing(Updating) Data:
-router.put('/updateproduct/:id', async (req, res) => {
+// Update Product (Edit)
+router.put('/api/updateproduct/:id', async (req, res) => {
     const { ProductName, ProductPrice, ProductBarcode } = req.body;
 
     try {
-        const updateProducts = await products.findByIdAndUpdate(req.params.id, { ProductName, ProductPrice, ProductBarcode }, { new: true });
-        console.log("Data Updated");
-        res.status(201).json(updateProducts);
+        const updatedProduct = await products.findByIdAndUpdate(
+            req.params.id,
+            { ProductName, ProductPrice, ProductBarcode },
+            { new: true }
+        );
+        res.status(200).json(updatedProduct);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Internal Server Error" });
     }
-    catch (err) {
-        console.log(err);
-    }
-})
+});
 
-//Deleting Data:
-router.delete('/deleteproduct/:id', async (req, res) => {
-
+// Delete Product
+router.delete('/api/deleteproduct/:id', async (req, res) => {
     try {
-        const deleteProduct = await products.findByIdAndDelete(req.params.id);
-        console.log("Data Deleted");
-        res.status(201).json(deleteProduct);
+        const deletedProduct = await products.findByIdAndDelete(req.params.id);
+        res.status(200).json(deletedProduct);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Internal Server Error" });
     }
-    catch (err) {
-        console.log(err);
-    }
-})
-
+});
 
 module.exports = router;
